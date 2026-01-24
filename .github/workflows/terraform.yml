@@ -57,7 +57,7 @@ jobs:
             -backend-config="dynamodb_table=${{ inputs.aws-lock-dynamodb-table }}"
 
       - name: Terraform Validate
-        run: terraform validate
+        run: cd infra && terraform validate
 
       - name: Terraform Destroy
         if: steps.read-destroy-config.outputs.destroy == 'true'
@@ -79,3 +79,63 @@ jobs:
         run: cd infra &&
           terraform workspace select ${{ inputs.environment }} || terraform workspace new ${{ inputs.environment }} &&
           terraform apply "${{ inputs.environment }}.plan"
+
+      - name: Logar AMAZON ECR
+        if: steps.read-destroy-config.outputs.destroy != 'true'
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker image
+        if: steps.read-destroy-config.outputs.destroy != 'true'
+        env:
+          ECR_REPO: ${{ secrets.ECR_REPO }}
+        run: |
+          IMAGE_TAG=${GITHUB_SHA}
+          # Se seu Dockerfile está na raiz:
+          docker build -t $ECR_REPO:$IMAGE_TAG .
+          # Se seu Dockerfile está em ./docker/Dockerfile, use:
+          # docker build -f docker/Dockerfile -t $ECR_REPO:$IMAGE_TAG .
+          docker push $ECR_REPO:$IMAGE_TAG
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+
+      - name: Download current task definition
+        if: steps.read-destroy-config.outputs.destroy != 'true'
+        env:
+          TASK_FAMILY: ${{ secrets.ECS_TASK_FAMILY }}
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition "$TASK_FAMILY" \
+            --query taskDefinition \
+            > task-definition.json
+
+      - name: Update task definition image
+        if: steps.read-destroy-config.outputs.destroy != 'true'
+        env:
+          ECR_REPO: ${{ secrets.ECR_REPO }}
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+        run: |
+          jq '.containerDefinitions[0].image = "'$ECR_REPO':'$IMAGE_TAG'" 
+              | del(.taskDefinitionArn,.revision,.status,.requiresAttributes,.compatibilities,.registeredAt,.registeredBy)' \
+              task-definition.json > new-task-definition.json
+
+      - name: Register new task definition
+        if: steps.read-destroy-config.outputs.destroy != 'true'
+        id: register-task
+        run: |
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://new-task-definition.json \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+          echo "NEW_TASK_DEF_ARN=$NEW_TASK_DEF_ARN" >> $GITHUB_ENV
+
+      - name: Deploy to ECS
+        if: steps.read-destroy-config.outputs.destroy != 'true'
+        env:
+          ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}
+          ECS_SERVICE: ${{ secrets.ECS_SERVICE }}
+          NEW_TASK_DEF_ARN: ${{ env.NEW_TASK_DEF_ARN }}
+        run: |
+          aws ecs update-service \
+            --cluster "$ECS_CLUSTER" \
+            --service "$ECS_SERVICE" \
+            --task-definition "$NEW_TASK_DEF_ARN"
+      

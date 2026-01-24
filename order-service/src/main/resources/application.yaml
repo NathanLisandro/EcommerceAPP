@@ -1,20 +1,18 @@
 server:
-  port: 8081
+  port: ${PORT:8080}
 
 spring:
 
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: notificart
+      uri: ${SPRING_DATA_MONGODB_URI}
 
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/notificart
+          issuer-uri: ${OIDC_ISSUER_URI}
 
 kafka:
-  url: localhost:9092
-  topic: notification-topic
+  url: ${KAFKA_BOOTSTRAP_SERVERS}
+  topic: ${KAFKA_TOPIC:notification-topic}

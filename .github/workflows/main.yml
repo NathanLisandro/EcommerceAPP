@@ -15,7 +15,7 @@ jobs:
     uses: ./.github/workflows/terraform.yml
     with:
       environment: prod
-      aws-assume-role-arn: "arn:aws:iam::450558841901:role/GithubActionNathanLisandro"
+      aws-assume-role-arn: "arn:aws:iam::450558841901:oidc-provider/token.actions.githubusercontent.com"
       aws-region: "us-east-1"
       aws-statefile-s3-bucket: "ecommerceapp-us-east-1-statefile"
       aws-lock-dynamodb-table: "ecommerceapp-us-east-1-lock"
