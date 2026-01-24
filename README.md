@@ -152,7 +152,7 @@ terraform apply
 
 ## 📝 Postman Collection
 
-Importe o arquivo `data/Notificart.postman_collection.json` no Postman para testar a API.
+Importe o arquivo `data/postman_collection.json` no Postman para testar a API.
 
 ## 📄 License
 
