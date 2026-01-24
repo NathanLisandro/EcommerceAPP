@@ -1,4 +1,4 @@
-# Notificart - E-commerce Microservices
+# E-commerce Microservices
 
 Sistema de e-commerce baseado em microserviços com **Order Service** e **Notification Service**.
 
@@ -51,7 +51,7 @@ Sistema de e-commerce baseado em microserviços com **Order Service** e **Notifi
 PORT=8080
 
 # OAuth2 / Keycloak
-OIDC_ISSUER_URI=https://your-keycloak/realms/notificart
+OIDC_ISSUER_URI=https://your-keycloak/realms/ecommerce
 
 # Kafka
 KAFKA_BOOTSTRAP_SERVERS=your-kafka:9092
@@ -59,7 +59,7 @@ KAFKA_TOPIC=notification-topic
 KAFKA_GROUP=notification-group
 
 # MongoDB
-SPRING_DATA_MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/notificart
+SPRING_DATA_MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/ecommerce
 ```
 
 ### Rodando Localmente
@@ -84,7 +84,7 @@ docker build -t notification-service ./notification-service
 # Run com variáveis de ambiente
 docker run -d \
   -e PORT=8080 \
-  -e OIDC_ISSUER_URI=https://your-keycloak/realms/notificart \
+  -e OIDC_ISSUER_URI=https://your-keycloak/realms/ecommerce \
   -e KAFKA_BOOTSTRAP_SERVERS=your-kafka:9092 \
   -e SPRING_DATA_MONGODB_URI=mongodb+srv://... \
   -p 8080:8080 \
@@ -92,7 +92,7 @@ docker run -d \
 
 docker run -d \
   -e PORT=8080 \
-  -e OIDC_ISSUER_URI=https://your-keycloak/realms/notificart \
+  -e OIDC_ISSUER_URI=https://your-keycloak/realms/ecommerce \
   -e KAFKA_BOOTSTRAP_SERVERS=your-kafka:9092 \
   -e KAFKA_GROUP=notification-group \
   -e SPRING_DATA_MONGODB_URI=mongodb+srv://... \
@@ -117,9 +117,9 @@ O projeto utiliza OAuth2 com Keycloak. Para obter um token:
 
 ```bash
 curl -X POST \
-  'https://your-keycloak/realms/notificart/protocol/openid-connect/token' \
+  'https://your-keycloak/realms/ecommerce/protocol/openid-connect/token' \
   -H 'Content-Type: application/x-www-form-urlencoded' \
-  -d 'grant_type=password&client_id=notificart-client&username=USER&password=PASS'
+  -d 'grant_type=password&client_id=ecommerce-client&username=USER&password=PASS'
 ```
 
 ## ☁️ Deploy AWS ECS
@@ -152,7 +152,7 @@ terraform apply
 
 ## 📝 Postman Collection
 
-Importe o arquivo `data/Notificart.postman_collection.json` no Postman para testar a API.
+Importe o arquivo `data/postman_collection.json` no Postman para testar a API.
 
 ## 📄 License
 
