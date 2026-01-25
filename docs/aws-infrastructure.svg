@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" font-family="Inter, -apple-system, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1100" height="700" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="550" y="40" text-anchor="middle" fill="#0f172a" font-size="24" font-weight="600">AWS Infrastructure</text>
+
+  <!-- AWS Cloud -->
+  <rect x="40" y="70" width="1020" height="580" rx="8" fill="#fff8f0" stroke="#ff9900" stroke-width="2"/>
+  <text x="60" y="95" fill="#ff9900" font-size="14" font-weight="600">AWS Cloud</text>
+
+  <!-- Region -->
+  <rect x="60" y="110" width="980" height="520" rx="6" fill="#fafafa" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="80" y="135" fill="#64748b" font-size="12">Region: sa-east-1</text>
+
+  <!-- VPC -->
+  <rect x="80" y="150" width="940" height="460" rx="6" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1.5"/>
+  <text x="100" y="175" fill="#0ea5e9" font-size="12" font-weight="500">VPC</text>
+
+  <!-- Public Subnet -->
+  <rect x="100" y="190" width="280" height="400" rx="4" fill="#ecfdf5" stroke="#22c55e" stroke-width="1"/>
+  <text x="120" y="215" fill="#16a34a" font-size="11" font-weight="500">Public Subnet</text>
+
+  <!-- Private Subnet 1 -->
+  <rect x="400" y="190" width="280" height="400" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="420" y="215" fill="#d97706" font-size="11" font-weight="500">Private Subnet A</text>
+
+  <!-- Private Subnet 2 -->
+  <rect x="700" y="190" width="300" height="400" rx="4" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="720" y="215" fill="#d97706" font-size="11" font-weight="500">Private Subnet B</text>
+
+  <!-- Internet Gateway -->
+  <g transform="translate(160, 240)">
+    <rect width="160" height="50" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="80" y="22" text-anchor="middle" fill="#166534" font-size="12" font-weight="500">Internet Gateway</text>
+    <text x="80" y="38" text-anchor="middle" fill="#64748b" font-size="9">igw-xxxxx</text>
+  </g>
+
+  <!-- ALB -->
+  <g transform="translate(140, 320)">
+    <rect width="200" height="60" rx="4" fill="#ffffff" stroke="#8b5cf6" stroke-width="1.5"/>
+    <text x="100" y="25" text-anchor="middle" fill="#6d28d9" font-size="12" font-weight="500">Application Load Balancer</text>
+    <text x="100" y="42" text-anchor="middle" fill="#64748b" font-size="9">ecommerce-alb</text>
+    <text x="100" y="55" text-anchor="middle" fill="#64748b" font-size="9">HTTPS :443</text>
+  </g>
+
+  <!-- NAT Gateway -->
+  <g transform="translate(160, 420)">
+    <rect width="160" height="50" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="80" y="22" text-anchor="middle" fill="#166534" font-size="12" font-weight="500">NAT Gateway</text>
+    <text x="80" y="38" text-anchor="middle" fill="#64748b" font-size="9">nat-xxxxx</text>
+  </g>
+
+  <!-- ECS Cluster -->
+  <g transform="translate(420, 240)">
+    <rect width="240" height="180" rx="4" fill="#fff1f2" stroke="#f43f5e" stroke-width="1.5"/>
+    <text x="120" y="22" text-anchor="middle" fill="#e11d48" font-size="12" font-weight="500">ECS Cluster</text>
+    <text x="120" y="38" text-anchor="middle" fill="#64748b" font-size="9">ecommerce-cluster</text>
+    
+    <!-- Order Service Task -->
+    <g transform="translate(15, 55)">
+      <rect width="210" height="50" rx="4" fill="#eff6ff" stroke="#3b82f6" stroke-width="1"/>
+      <text x="105" y="22" text-anchor="middle" fill="#1e40af" font-size="11" font-weight="500">order-service</text>
+      <text x="105" y="38" text-anchor="middle" fill="#64748b" font-size="9">Fargate • 512 CPU • 1GB RAM</text>
+    </g>
+    
+    <!-- Notification Service Task -->
+    <g transform="translate(15, 115)">
+      <rect width="210" height="50" rx="4" fill="#faf5ff" stroke="#8b5cf6" stroke-width="1"/>
+      <text x="105" y="22" text-anchor="middle" fill="#6d28d9" font-size="11" font-weight="500">notification-service</text>
+      <text x="105" y="38" text-anchor="middle" fill="#64748b" font-size="9">Fargate • 512 CPU • 1GB RAM</text>
+    </g>
+  </g>
+
+  <!-- ECR -->
+  <g transform="translate(420, 450)">
+    <rect width="240" height="60" rx="4" fill="#ffffff" stroke="#f97316" stroke-width="1.5"/>
+    <text x="120" y="22" text-anchor="middle" fill="#c2410c" font-size="12" font-weight="500">ECR</text>
+    <text x="120" y="40" text-anchor="middle" fill="#64748b" font-size="9">order-service:latest</text>
+    <text x="120" y="52" text-anchor="middle" fill="#64748b" font-size="9">notification-service:latest</text>
+  </g>
+
+  <!-- CloudWatch -->
+  <g transform="translate(420, 530)">
+    <rect width="240" height="50" rx="4" fill="#ffffff" stroke="#06b6d4" stroke-width="1.5"/>
+    <text x="120" y="22" text-anchor="middle" fill="#0891b2" font-size="12" font-weight="500">CloudWatch</text>
+    <text x="120" y="38" text-anchor="middle" fill="#64748b" font-size="9">Logs • Metrics • Alarms</text>
+  </g>
+
+  <!-- MSK (Kafka) -->
+  <g transform="translate(720, 240)">
+    <rect width="260" height="80" rx="4" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+    <text x="130" y="25" text-anchor="middle" fill="#c2410c" font-size="12" font-weight="500">Amazon MSK</text>
+    <text x="130" y="42" text-anchor="middle" fill="#64748b" font-size="9">Managed Kafka</text>
+    <text x="130" y="58" text-anchor="middle" fill="#64748b" font-size="9">notification-topic</text>
+    <text x="130" y="72" text-anchor="middle" fill="#64748b" font-size="9">3 brokers</text>
+  </g>
+
+  <!-- DocumentDB / MongoDB -->
+  <g transform="translate(720, 340)">
+    <rect width="260" height="70" rx="4" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="130" y="25" text-anchor="middle" fill="#166534" font-size="12" font-weight="500">Amazon DocumentDB</text>
+    <text x="130" y="42" text-anchor="middle" fill="#64748b" font-size="9">MongoDB Compatible</text>
+    <text x="130" y="58" text-anchor="middle" fill="#64748b" font-size="9">ecommerce database</text>
+  </g>
+
+  <!-- Secrets Manager -->
+  <g transform="translate(720, 430)">
+    <rect width="260" height="50" rx="4" fill="#ffffff" stroke="#ec4899" stroke-width="1.5"/>
+    <text x="130" y="22" text-anchor="middle" fill="#be185d" font-size="12" font-weight="500">Secrets Manager</text>
+    <text x="130" y="38" text-anchor="middle" fill="#64748b" font-size="9">DB credentials • API keys • OAuth secrets</text>
+  </g>
+
+  <!-- S3 -->
+  <g transform="translate(720, 500)">
+    <rect width="260" height="50" rx="4" fill="#ffffff" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="130" y="22" text-anchor="middle" fill="#166534" font-size="12" font-weight="500">S3 Bucket</text>
+    <text x="130" y="38" text-anchor="middle" fill="#64748b" font-size="9">Terraform state</text>
+  </g>
+
+  <!-- Route 53 (External) -->
+  <g transform="translate(160, 510)">
+    <rect width="160" height="50" rx="4" fill="#ffffff" stroke="#8b5cf6" stroke-width="1.5"/>
+    <text x="80" y="22" text-anchor="middle" fill="#6d28d9" font-size="12" font-weight="500">Route 53</text>
+    <text x="80" y="38" text-anchor="middle" fill="#64748b" font-size="9">api.ecommerce.com</text>
+  </g>
+
+  <!-- Connections -->
+  
+  <!-- Internet -> IGW -->
+  <line x1="240" y1="150" x2="240" y2="230" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="255" y="195" fill="#64748b" font-size="9">Internet</text>
+
+  <!-- IGW -> ALB -->
+  <line x1="240" y1="290" x2="240" y2="310" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ALB -> ECS -->
+  <line x1="340" y1="350" x2="410" y2="320" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- NAT -> Internet (outbound) -->
+  <line x1="240" y1="420" x2="240" y2="395" stroke="#64748b" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ECS -> MSK -->
+  <line x1="660" y1="300" x2="710" y2="280" stroke="#f97316" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ECS -> DocumentDB -->
+  <line x1="660" y1="350" x2="710" y2="370" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ECS -> ECR -->
+  <line x1="540" y1="420" x2="540" y2="440" stroke="#f97316" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ECS -> CloudWatch -->
+  <line x1="540" y1="420" x2="540" y2="520" stroke="#06b6d4" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ECS -> Secrets -->
+  <line x1="660" y1="380" x2="710" y2="450" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Route53 -> ALB -->
+  <line x1="240" y1="510" x2="240" y2="390" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Legend -->
+  <g transform="translate(60, 660)">
+    <text x="0" y="0" fill="#0f172a" font-size="11" font-weight="500">Legend:</text>
+    <line x1="60" y1="-4" x2="90" y2="-4" stroke="#64748b" stroke-width="1.5"/>
+    <text x="100" y="0" fill="#64748b" font-size="10">Data flow</text>
+    <line x1="180" y1="-4" x2="210" y2="-4" stroke="#64748b" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="220" y="0" fill="#64748b" font-size="10">Internal / Config</text>
+  </g>
+
+  <!-- Terraform badge -->
+  <g transform="translate(900, 660)">
+    <rect x="0" y="-15" width="120" height="22" rx="4" fill="#7c3aed"/>
+    <text x="60" y="0" text-anchor="middle" fill="#fff" font-size="10">Terraform managed</text>
+  </g>
+
+</svg>

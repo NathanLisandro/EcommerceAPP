@@ -3,6 +3,9 @@ server:
 
 spring:
 
+  application:
+    name: order-service
+
   data:
     mongodb:
       uri: ${SPRING_DATA_MONGODB_URI}
@@ -16,3 +19,69 @@ spring:
 kafka:
   url: ${KAFKA_BOOTSTRAP_SERVERS}
   topic: ${KAFKA_TOPIC:notification-topic}
+
+# Logging
+logging:
+  level:
+    root: INFO
+    dev.nathan.order: DEBUG
+    org.springframework.kafka: WARN
+    org.apache.kafka: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{traceId:-}] %-5level %logger{36} - %msg%n"
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,circuitbreakers,retries
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
+# Resilience4j
+resilience4j:
+  circuitbreaker:
+    instances:
+      kafka-producer:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+      mongodb:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+
+  retry:
+    instances:
+      kafka-producer:
+        maxAttempts: 3
+        waitDuration: 1s
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+        retryExceptions:
+          - org.apache.kafka.common.errors.TimeoutException
+          - org.springframework.kafka.KafkaException
+      mongodb:
+        maxAttempts: 3
+        waitDuration: 500ms
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+
+  timelimiter:
+    instances:
+      kafka-producer:
+        timeoutDuration: 5s
+      mongodb:
+        timeoutDuration: 3s

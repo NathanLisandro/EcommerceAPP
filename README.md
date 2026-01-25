@@ -4,18 +4,11 @@ Sistema de e-commerce baseado em microserviços com **Order Service** e **Notifi
 
 ## 🏗️ Arquitetura
 
-```
-┌─────────────────┐      ┌─────────────┐      ┌──────────────────────┐
-│   order-service │─────▶│    Kafka    │─────▶│ notification-service │
-│     (REST API)  │      │             │      │     (Consumer)       │
-└────────┬────────┘      └─────────────┘      └──────────┬───────────┘
-         │                                               │
-         └───────────────┬───────────────────────────────┘
-                         ▼
-                   ┌───────────┐
-                   │  MongoDB  │
-                   └───────────┘
-```
+![Architecture](docs/architecture.svg)
+
+### AWS Infrastructure
+
+![AWS](docs/aws-infrastructure.svg)
 
 ## 🛠️ Tech Stack
 

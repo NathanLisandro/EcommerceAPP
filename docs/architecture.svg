@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" font-family="Inter, -apple-system, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 z" fill="#f97316"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="600" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="500" y="40" text-anchor="middle" fill="#0f172a" font-size="24" font-weight="600">System Architecture</text>
+
+  <!-- AWS Cloud Region -->
+  <rect x="40" y="70" width="920" height="420" rx="8" fill="#fafafa" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="60" y="95" fill="#64748b" font-size="12">AWS ECS</text>
+
+  <!-- Client -->
+  <g transform="translate(80, 240)">
+    <rect width="100" height="70" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="50" y="40" text-anchor="middle" fill="#0f172a" font-size="13" font-weight="500">Client</text>
+    <text x="50" y="55" text-anchor="middle" fill="#64748b" font-size="10">Web / Mobile</text>
+  </g>
+
+  <!-- Order Service -->
+  <g transform="translate(260, 180)">
+    <rect width="180" height="190" rx="6" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="90" y="30" text-anchor="middle" fill="#1e40af" font-size="14" font-weight="600">order-service</text>
+    <text x="90" y="48" text-anchor="middle" fill="#3b82f6" font-size="10">:8080</text>
+    
+    <line x1="15" y1="60" x2="165" y2="60" stroke="#dbeafe" stroke-width="1"/>
+    
+    <text x="20" y="82" fill="#64748b" font-size="10">OrderController</text>
+    <text x="20" y="102" fill="#64748b" font-size="10">CreateOrderService</text>
+    <text x="20" y="122" fill="#64748b" font-size="10">UpdateOrderService</text>
+    <text x="20" y="142" fill="#64748b" font-size="10">OrderStateService</text>
+    <text x="20" y="162" fill="#64748b" font-size="10">KafkaProducer</text>
+    <text x="20" y="182" fill="#64748b" font-size="10">OrderRepository</text>
+  </g>
+
+  <!-- Kafka -->
+  <g transform="translate(520, 230)">
+    <rect width="140" height="90" rx="6" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+    <text x="70" y="35" text-anchor="middle" fill="#c2410c" font-size="14" font-weight="600">Kafka</text>
+    <line x1="15" y1="50" x2="125" y2="50" stroke="#fed7aa" stroke-width="1"/>
+    <text x="70" y="72" text-anchor="middle" fill="#64748b" font-size="10">notification-topic</text>
+  </g>
+
+  <!-- Notification Service -->
+  <g transform="translate(740, 200)">
+    <rect width="180" height="150" rx="6" fill="#faf5ff" stroke="#8b5cf6" stroke-width="1.5"/>
+    <text x="90" y="30" text-anchor="middle" fill="#6d28d9" font-size="14" font-weight="600">notification-service</text>
+    <text x="90" y="48" text-anchor="middle" fill="#8b5cf6" font-size="10">:8080</text>
+    
+    <line x1="15" y1="60" x2="165" y2="60" stroke="#ede9fe" stroke-width="1"/>
+    
+    <text x="20" y="82" fill="#64748b" font-size="10">KafkaConsumer</text>
+    <text x="20" y="102" fill="#64748b" font-size="10">NotificationListener</text>
+    <text x="20" y="122" fill="#64748b" font-size="10">SecurityConfig</text>
+    <text x="20" y="142" fill="#64748b" font-size="10">group: notification-group</text>
+  </g>
+
+  <!-- MongoDB -->
+  <g transform="translate(420, 420)">
+    <rect width="140" height="60" rx="6" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="70" y="30" text-anchor="middle" fill="#166534" font-size="14" font-weight="600">MongoDB</text>
+    <text x="70" y="48" text-anchor="middle" fill="#64748b" font-size="10">Atlas</text>
+  </g>
+
+  <!-- Keycloak -->
+  <g transform="translate(80, 400)">
+    <rect width="140" height="60" rx="6" fill="#fdf2f8" stroke="#ec4899" stroke-width="1.5"/>
+    <text x="70" y="30" text-anchor="middle" fill="#be185d" font-size="14" font-weight="600">Keycloak</text>
+    <text x="70" y="48" text-anchor="middle" fill="#64748b" font-size="10">OAuth2 / JWT</text>
+  </g>
+
+  <!-- Connections -->
+  
+  <!-- Client -> Order Service -->
+  <line x1="180" y1="275" x2="250" y2="275" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="215" y="268" text-anchor="middle" fill="#64748b" font-size="9">REST</text>
+
+  <!-- Order Service -> Kafka -->
+  <line x1="440" y1="275" x2="510" y2="275" stroke="#f97316" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+  <text x="475" y="268" text-anchor="middle" fill="#f97316" font-size="9">publish</text>
+
+  <!-- Kafka -> Notification Service -->
+  <line x1="660" y1="275" x2="730" y2="275" stroke="#f97316" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+  <text x="695" y="268" text-anchor="middle" fill="#f97316" font-size="9">subscribe</text>
+
+  <!-- Order Service -> MongoDB -->
+  <line x1="350" y1="370" x2="420" y2="430" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Notification Service -> MongoDB -->
+  <line x1="830" y1="350" x2="560" y2="430" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Keycloak -> Services (dashed) -->
+  <line x1="220" y1="420" x2="270" y2="370" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="220" y1="420" x2="740" y2="340" stroke="#ec4899" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Order Flow -->
+  <g transform="translate(260, 530)">
+    <text x="0" y="0" fill="#0f172a" font-size="11" font-weight="500">Order States:</text>
+    <rect x="100" y="-12" width="65" height="20" rx="4" fill="#dbeafe"/>
+    <text x="132" y="3" text-anchor="middle" fill="#1e40af" font-size="10">CREATED</text>
+    <text x="175" y="3" fill="#94a3b8">→</text>
+    <rect x="190" y="-12" width="45" height="20" rx="4" fill="#dcfce7"/>
+    <text x="212" y="3" text-anchor="middle" fill="#166534" font-size="10">PAID</text>
+    <text x="245" y="3" fill="#94a3b8">→</text>
+    <rect x="260" y="-12" width="60" height="20" rx="4" fill="#ffedd5"/>
+    <text x="290" y="3" text-anchor="middle" fill="#c2410c" font-size="10">SHIPPED</text>
+    <text x="330" y="3" fill="#94a3b8">→</text>
+    <rect x="345" y="-12" width="75" height="20" rx="4" fill="#ede9fe"/>
+    <text x="382" y="3" text-anchor="middle" fill="#6d28d9" font-size="10">DELIVERED</text>
+  </g>
+
+  <!-- Tech Stack -->
+  <g transform="translate(700, 530)">
+    <text x="0" y="0" fill="#64748b" font-size="10">Java 17 • Spring Boot 3 • Kafka • MongoDB • Terraform</text>
+  </g>
+
+</svg>

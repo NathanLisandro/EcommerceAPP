@@ -3,6 +3,9 @@ server:
 
 spring:
 
+  application:
+    name: notification-service
+
   data:
     mongodb:
       uri: ${SPRING_DATA_MONGODB_URI}
@@ -17,3 +20,47 @@ kafka:
   url: ${KAFKA_BOOTSTRAP_SERVERS}
   topic: ${KAFKA_TOPIC:notification-topic}
   group: ${KAFKA_GROUP:notification-group}
+
+# Logging
+logging:
+  level:
+    root: INFO
+    dev.nathan.notification: DEBUG
+    org.springframework.kafka: WARN
+    org.apache.kafka: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{traceId:-}] %-5level %logger{36} - %msg%n"
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,circuitbreakers,retries
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
+# Resilience4j
+resilience4j:
+  circuitbreaker:
+    instances:
+      notification-processor:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+
+  retry:
+    instances:
+      notification-processor:
+        maxAttempts: 3
+        waitDuration: 1s
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2

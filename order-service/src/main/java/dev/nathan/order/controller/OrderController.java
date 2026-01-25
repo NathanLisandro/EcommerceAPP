@@ -27,16 +27,34 @@ public class OrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrderResponse create(@RequestBody CreateOrderRequest request) {
-        log.info("Creating order with request: {}", request);
+        log.info("[API] POST /order - Creating order: customerId={}, basketId={}, amount={}",
+                request.getCustomerId(), request.getBasketId(), request.getAmount());
+        
+        long startTime = System.currentTimeMillis();
         Order savedOrder = createOrderService.execute(OrderMapper.toOrder(request));
-        return OrderMapper.toOrderResponse(savedOrder);
+        OrderResponse response = OrderMapper.toOrderResponse(savedOrder);
+        
+        long duration = System.currentTimeMillis() - startTime;
+        log.info("[API] POST /order - Response: orderId={}, status={}, duration={}ms",
+                response.getId(), response.getStatus(), duration);
+        
+        return response;
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public OrderResponse updateOrder(@RequestBody UpdateOrderRequest request) {
-        log.info("Updating order with request: {}", request);
+        log.info("[API] PUT /order - Updating order: orderId={}, event={}",
+                request.getOrderId(), request.getOrderEvent());
+        
+        long startTime = System.currentTimeMillis();
         Order savedOrder = updateOrderService.execute(request.getOrderId(), request.getOrderEvent());
-        return OrderMapper.toOrderResponse(savedOrder);
+        OrderResponse response = OrderMapper.toOrderResponse(savedOrder);
+        
+        long duration = System.currentTimeMillis() - startTime;
+        log.info("[API] PUT /order - Response: orderId={}, newStatus={}, duration={}ms",
+                response.getId(), response.getStatus(), duration);
+        
+        return response;
     }
 }
