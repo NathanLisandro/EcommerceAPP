@@ -7,13 +7,19 @@ import dev.nathan.order.entity.Order;
 import dev.nathan.order.mapper.OrderMapper;
 import dev.nathan.order.service.CreateOrderService;
 import dev.nathan.order.service.UpdateOrderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/api/v1/orders")
+@Tag(name = "Orders", description = "Order management API")
 public class OrderController {
 
     private final CreateOrderService createOrderService;
@@ -26,8 +32,15 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderResponse create(@RequestBody CreateOrderRequest request) {
-        log.info("[API] POST /order - Creating order: customerId={}, basketId={}, amount={}",
+    @Operation(summary = "Create a new order", description = "Creates a new order with CREATED status")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Order created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "503", description = "Service temporarily unavailable")
+    })
+    public OrderResponse create(@Valid @RequestBody CreateOrderRequest request) {
+        log.info("[API] POST /api/v1/orders - Creating order: customerId={}, basketId={}, amount={}",
                 request.getCustomerId(), request.getBasketId(), request.getAmount());
         
         long startTime = System.currentTimeMillis();
@@ -35,7 +48,7 @@ public class OrderController {
         OrderResponse response = OrderMapper.toOrderResponse(savedOrder);
         
         long duration = System.currentTimeMillis() - startTime;
-        log.info("[API] POST /order - Response: orderId={}, status={}, duration={}ms",
+        log.info("[API] POST /api/v1/orders - Response: orderId={}, status={}, duration={}ms",
                 response.getId(), response.getStatus(), duration);
         
         return response;
@@ -43,8 +56,16 @@ public class OrderController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public OrderResponse updateOrder(@RequestBody UpdateOrderRequest request) {
-        log.info("[API] PUT /order - Updating order: orderId={}, event={}",
+    @Operation(summary = "Update order status", description = "Updates order status based on the event")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Order updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data or state transition"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "404", description = "Order not found"),
+            @ApiResponse(responseCode = "503", description = "Service temporarily unavailable")
+    })
+    public OrderResponse updateOrder(@Valid @RequestBody UpdateOrderRequest request) {
+        log.info("[API] PUT /api/v1/orders - Updating order: orderId={}, event={}",
                 request.getOrderId(), request.getOrderEvent());
         
         long startTime = System.currentTimeMillis();
@@ -52,7 +73,7 @@ public class OrderController {
         OrderResponse response = OrderMapper.toOrderResponse(savedOrder);
         
         long duration = System.currentTimeMillis() - startTime;
-        log.info("[API] PUT /order - Response: orderId={}, newStatus={}, duration={}ms",
+        log.info("[API] PUT /api/v1/orders - Response: orderId={}, newStatus={}, duration={}ms",
                 response.getId(), response.getStatus(), duration);
         
         return response;

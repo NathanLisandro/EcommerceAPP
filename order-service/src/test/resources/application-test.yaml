@@ -1,0 +1,61 @@
+# Test profile for Order Service
+spring:
+  application:
+    name: order-service-test
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/test
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test-orders
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: order-group-test
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+logging:
+  level:
+    root: INFO
+    dev.nathan: DEBUG
+    org.apache.kafka: WARN
+    org.springframework.kafka: WARN
+    org.springframework.data.mongodb: WARN
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      mongodb:
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+      kafka-producer:
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+  retry:
+    instances:
+      mongodb:
+        maxAttempts: 2
+        waitDuration: 100ms
+      kafka-producer:
+        maxAttempts: 2
+        waitDuration: 100ms
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false

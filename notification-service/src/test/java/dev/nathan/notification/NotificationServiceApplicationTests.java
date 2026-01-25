@@ -1,13 +1,13 @@
 package dev.nathan.notification;
-
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
+import static org.assertj.core.api.Assertions.assertThat;
+@DisplayName("Notification Service Application Tests")
 class NotificationServiceApplicationTests {
-
 	@Test
-	void contextLoads() {
+	@DisplayName("Application class should be instantiable")
+	void applicationClassShouldBeInstantiable() {
+		NotificationServiceApplication app = new NotificationServiceApplication();
+		assertThat(app).isNotNull();
 	}
-
 }

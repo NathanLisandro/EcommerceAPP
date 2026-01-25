@@ -1,0 +1,42 @@
+# Test profile for Notification Service
+spring:
+  application:
+    name: notification-service-test
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/test
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notification-group-test
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "dev.nathan.notification.*,dev.nathan.order.*"
+        spring.json.type.mapping: "notificationMessage:dev.nathan.notification.message.NotificationMessage"
+
+logging:
+  level:
+    root: INFO
+    dev.nathan: DEBUG
+    org.apache.kafka: WARN
+    org.springframework.kafka: WARN
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      notification-listener:
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5s
+  retry:
+    instances:
+      notification-listener:
+        maxAttempts: 2
+        waitDuration: 100ms
