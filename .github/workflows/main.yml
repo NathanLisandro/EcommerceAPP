@@ -2,9 +2,8 @@ name: "DEV DEPLOY"
 
 
 on:
-  push:
-    branches:
-      - main
+  # A infraestrutura AWS do estudo foi desligada; o deploy agora só roda manualmente.
+  workflow_dispatch:
 
 permissions:
   id-token: write

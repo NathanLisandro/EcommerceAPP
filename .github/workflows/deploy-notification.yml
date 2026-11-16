@@ -1,11 +1,8 @@
 name: Deploy Order Service
 
 on:
-  push:
-    branches: [ "develop", "main" ]
-    paths:
-      - "order-service/**"
-      - ".github/workflows/**"
+  # A infraestrutura AWS do estudo foi desligada; o deploy agora só roda manualmente.
+  workflow_dispatch:
 
 permissions:
   id-token: write
